@@ -9,26 +9,22 @@ public class Pollo : MonoBehaviour {
 
     [SerializeField] int fuerza = 10;
     [SerializeField] Transform posPies;
-	void Start () {
+    [SerializeField] int distanciaDeteccion = 10;
+    void Start() {
 
         //Recogemos la referencia 
         rb = GetComponent<Rigidbody>();
         tf = GetComponent<Transform>();
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    }
+
+    // Update is called once per frame
+    void Update() {
         //salto
-        if (Input.GetKeyDown("space")) 
+        if (Input.GetKeyDown("space"))
         {
-            /*int layerMaskIndex = LayerMask.NameToLayer("Terrain");
-            Collider [] cols =Physics.OverlapSphere(posPies.position, 10f, layerMaskIndex);
-            for (int i = 0; i < cols.Length; i++)
-            {
-                                Debug.Log("You touch my tralala, my ding, ding " + i);
-            }*/
-            rb.AddForce(new Vector3 (0,1,0) * fuerza);
+
+            rb.AddForce(new Vector3(0, 1, 0.5F) * fuerza);
         }
         if (Input.GetKeyDown("up"))
         {
@@ -44,7 +40,7 @@ public class Pollo : MonoBehaviour {
             rb.AddForce(new Vector3(-1, 0, 0) * fuerza);
         }
 
-        if(Input.GetKeyDown("right"))
+        if (Input.GetKeyDown("right"))
         {
             rb.AddForce(new Vector3(1, 0, 0) * fuerza);
         }
@@ -52,6 +48,23 @@ public class Pollo : MonoBehaviour {
 
     }
 
+
+    private bool EstoyEnSuelo()
+    {
+        int layerIndex = LayerMask.NameToLayer("Terrain");
+        bool enSuelo = false;
+
+        enSuelo = Physics.CheckSphere(posPies.position, distanciaDeteccion, layerIndex);
+
+
+        /* Collider [] cols =Physics.OverlapSphere(posPies.position, 10f, layerIndex);
+         for (int i = 0; i < cols.Length; i++)
+         {
+                             Debug.Log("You touch my tralala, my ding, ding " + i);
+         }*/
+
+        return enSuelo;
+    }
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("naziStuff");
